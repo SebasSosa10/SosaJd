@@ -1,7 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from api.v1 import Butterfly_routes, ButterflyGarden_routes
 import os
 
 # FastAPI app
@@ -16,3 +14,6 @@ app = FastAPI(
         "persistAuthorization": True,
     },
 )
+
+app.include_router(Butterfly_routes.router, prefix="/api/v1/butterfly")
+app.include_router(ButterflyGarden_routes.router, prefix="/api/v1/butterflygarden")
