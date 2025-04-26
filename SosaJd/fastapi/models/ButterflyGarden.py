@@ -1,5 +1,4 @@
 __tablename__ = "butterfly_houses"
-
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
