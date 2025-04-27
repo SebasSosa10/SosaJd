@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from fastapi.db.session import get_db
-from fastapi.Schemes.ButterflyGarden_Scheme import ButterflyGardenCreate, ButterflyGardenResponse
-from fastapi.Services.ButterflyGarden_Service import create_butterflyGarden, read_butterflyGarden, read_butterflyGardens
+from db.session import get_db
+from models.ButterflyGarden import *
+from Schemes.ButterflyGarden_Scheme import ButterflyGardenCreate, ButterflyGardenResponse
+from Services.ButterflyGarden_Service import create_butterflyGarden, read_butterflyGarden, read_butterflyGardens
 
 router = APIRouter()
 

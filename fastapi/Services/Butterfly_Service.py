@@ -1,28 +1,17 @@
 from sqlalchemy.orm import Session
-from models.Butterfly import Butterfly
+from fastapi import APIRouter, Depends, HTTPException
+from db.session import get_db   
 from Schemes.Butterfly_Scheme import ButterflyCreate
+from Repositories.Butterfly_Repository import read_butterfly, read_butterflys, delete_butterfly, create_butterfly
 
-def read_butterflys(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    butterfly = db.query(Butterfly).offset(skip).limit(limit).all()
-    return butterfly
+def read_butterflys_serv(db: Session):
+    return read_butterflys(db)
 
-def create_butterfly(name: str, description: str = None, db: Session = Depends(get_db)):
-    butterfly = Butterfly(name=name, description=description)
-    db.add(butterfly)
-    db.commit()
-    db.refresh(butterfly)
-    return butterfly
+def read_butterfly_serv(butterfly_id: int, db: Session = Depends(get_db)):
+    return read_butterfly(butterfly_id, db)
 
-def read_butterfly(butterfly_id: int, db: Session = Depends(get_db)):
-    butterfly = db.query(Butterfly).filter(Butterfly.id == butterfly_id).first()
-    if butterfly is None:
-        raise HTTPException(status_code=404, detail="Butterfly not found")
-    return butterfly
+def create_butterfly_serv(butterfly: ButterflyCreate, db: Session = Depends(get_db)):
+    return create_butterfly(butterfly, db)
 
-def delete_butterfly(butterfly_id: int, db: Session = Depends(get_db)):
-    butterfly = db.query(Butterfly).filter(Butterfly.id == butterfly_id).first()
-    if butterfly is None:
-        raise HTTPException(status_code=404, detail="Butterfly not found")
-    db.delete(butterfly)
-    db.commit()
-    return {"message": "Butterfly deleted successfully"}
+def delete_butterfly_serv(butterfly_id: int, db: Session = Depends(get_db)):
+    return delete_butterfly(butterfly_id, db)

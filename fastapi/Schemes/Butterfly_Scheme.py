@@ -2,7 +2,8 @@ from pydantic import BaseModel
 
 class ButterflyBase(BaseModel):
     species: str
-    wingspan: str
+    wingspan: int
+    color: str
 
 class ButterflyCreate(ButterflyBase):
     pass

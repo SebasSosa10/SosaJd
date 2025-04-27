@@ -1,28 +1,17 @@
 from sqlalchemy.orm import Session
-from models.ButterflyGarden import ButterflyGarden
+from fastapi import APIRouter, Depends, HTTPException
+from db.session import get_db   
 from Schemes.ButterflyGarden_Scheme import ButterflyGardenCreate
+from Repositories.ButterflyGarden_Repository import create_butterflyGarden, read_butterflyGarden, read_butterflyGardens, delete_butterflyGarden
 
-def read_butterflyGardens(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    butterflyGarden = db.query(ButterflyGarden).offset(skip).limit(limit).all()
-    return butterflyGarden
+def read_butterflyGardens(db: Session):
+    return read_butterflyGardens(db)
 
-def create_butterflyGarden(name: str, description: str = None, db: Session = Depends(get_db)):
-    butterflyGarden = ButterflyGarden(name=name, description=description)
-    db.add(butterflyGarden)
-    db.commit()
-    db.refresh(butterflyGarden)
-    return butterflyGarden
+def read_butterflyGarden(butterfly_garden_id: int, db: Session = Depends(get_db)):
+    return read_butterflyGarden(butterfly_garden_id, db)
 
-def read_butterflyGarden(butterflyGarden_id: int, db: Session = Depends(get_db)):
-    butterflyGarden = db.query(ButterflyGarden).filter(ButterflyGarden.id == butterflyGarden_id).first()
-    if butterflyGarden is None:
-        raise HTTPException(status_code=404, detail="ButterflyGarden not found")
-    return butterflyGarden
+def create_butterflyGarden(butterflyGarden: ButterflyGardenCreate, db: Session = Depends(get_db)):
+    return create_butterflyGarden(butterflyGarden, db)
 
 def delete_butterflyGarden(butterflyGarden_id: int, db: Session = Depends(get_db)):
-    butterflyGarden = db.query(ButterflyGarden).filter(ButterflyGarden.id == butterflyGarden_id).first()
-    if butterflyGarden is None:
-        raise HTTPException(status_code=404, detail="ButterflyGarden not found")
-    db.delete(butterflyGarden)
-    db.commit()
-    return {"message": "ButterflyGarden deleted successfully"}
+    return delete_butterflyGarden(butterflyGarden_id, db)

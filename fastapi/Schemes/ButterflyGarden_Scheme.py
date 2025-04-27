@@ -7,7 +7,6 @@ class ButterflyGardenBase(BaseModel):
 class ButterflyGardenCreate(ButterflyGardenBase):
     pass
 
-
 class ButterflyGardenResponse(ButterflyGardenBase):
     id: int
     class Config:
