@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from db.session import get_db
 from models.Butterfly import *
 from Schemes.Butterfly_Scheme import ButterflyCreate, ButterflyResponse
-from Services.Butterfly_Service import create_butterfly_serv, read_butterfly_serv, read_butterflies_serv, delete_butterfly_serv
+from Services.Butterfly_Service import create_butterfly_serv, read_butterfly_serv, read_butterflies_serv, delete_butterfly_serv, update_butterfly_serv
 
 router = APIRouter()
 
@@ -22,3 +22,7 @@ def delete_butterfly_route(butterfly_id: int, db: Session = Depends(get_db)):
 @router.get("/butterfly/")
 def read_butterflys_route(butterfly_id: int, db: Session = Depends(get_db)):
     return read_butterflies_serv(db)
+
+@router.put("/butterfly/{butterfly_id}")
+def update_butterfly_route(butterfly_id: int, butterfly_update: ButterflyCreate, db: Session = Depends(get_db)):
+    return update_butterfly_serv(butterfly_id, butterfly_update, db)

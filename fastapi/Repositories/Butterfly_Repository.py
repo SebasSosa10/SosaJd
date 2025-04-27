@@ -28,3 +28,15 @@ def delete_butterfly(butterfly_id: int, db: Session = Depends(get_db)):
     db.delete(butterfly)
     db.commit()
     return {"message": "Butterfly deleted successfully"}
+
+def update_butterfly(butterfly_id: int, butterfly_update: ButterflyCreate, db: Session = Depends(get_db)):
+    butterfly = db.query(Butterfly).filter(Butterfly.id == butterfly_id).first()
+    if butterfly is None:
+        raise HTTPException(status_code=404, detail="Butterfly not found")
+    
+    for key, value in butterfly_update.dict(exclude_unset=True).items():
+        setattr(butterfly, key, value)
+    
+    db.commit()
+    db.refresh(butterfly)
+    return butterfly
