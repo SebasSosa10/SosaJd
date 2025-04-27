@@ -11,9 +11,9 @@ def create_butterfly(butterfly: ButterflyCreate, db: Session):
     db.refresh(db_Butterfly)
     return db_Butterfly
 
-def read_butterflys(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    butterfly = db.query(Butterfly).offset(skip).limit(limit).all()
-    return butterfly
+def read_butterflies(db: Session = Depends(get_db)):
+    butterflies = db.query(Butterfly).all()
+    return butterflies
 
 def read_butterfly(butterfly_id: int, db: Session = Depends(get_db)):
     butterfly = db.query(Butterfly).filter(Butterfly.id == butterfly_id).first()
